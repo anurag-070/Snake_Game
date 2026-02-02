@@ -160,7 +160,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 50;
+            z-index: 1000;
             background: rgba(5, 10, 5, 0.7);
             backdrop-filter: blur(25px);
             transition: opacity 0.6s ease, visibility 0.6s ease;
@@ -178,12 +178,17 @@
             box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
             width: 100%;
             max-width: 480px;
-            max-height: 90vh;
+            max-height: 85vh;
             position: relative;
             display: flex;
             flex-direction: column;
-            overflow: visible;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+        
+        .glass-panel::-webkit-scrollbar { display: none; }
 
         /* Decorative Pulse Ring for Landing */
         #start-overlay .glass-panel::after {
@@ -196,6 +201,9 @@
             animation: panelPulse 3s infinite;
             pointer-events: none;
         }
+
+        /* Keep start overlay overflow visible for the pulse ring */
+        #start-overlay .glass-panel { overflow: visible; }
 
         @keyframes panelPulse {
             0% { transform: scale(1); opacity: 0.3; }
@@ -275,6 +283,7 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 20px 40px rgba(57, 255, 20, 0.2);
             position: relative;
+            z-index: 5;
             overflow: hidden;
         }
 
@@ -448,9 +457,135 @@
         .social-pill:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(57, 255, 20, 0.5); }
 
         @media (max-width: 768px) {
-            .glass-panel { padding: 40px 25px; }
-            h1 { letter-spacing: 8px; }
+            .glass-panel { padding: 30px 20px; max-width: 90vw; }
+            h1 { letter-spacing: 6px; font-size: 2rem; }
+            .main-btn { padding: 16px 30px; font-size: 1rem; width: 100%; margin-top: 15px; }
+            .btn-mini { padding: 10px 16px; font-size: 0.85rem; }
+            .option-card { padding: 16px; margin-bottom: 12px; }
+            .level-grid-container { gap: 8px; padding: 16px; max-height: 250px; }
+            .level-node { min-width: 50px; min-height: 50px; font-size: 0.9rem; }
+            .nav-header { margin-bottom: 15px; }
+            .stats-label { font-size: 0.7rem; margin-bottom: 30px; }
+            .hero-title { font-size: 3rem; }
+            .ticker-wrap { margin-top: 20px; padding: 6px 0; }
+            .ticker-item { font-size: 0.65rem; padding: 0 1.5rem; }
+            .social-pill { padding: 10px 20px; font-size: 0.85rem; }
+            .info-card { padding: 40px; max-width: 80vw; }
             #info-trigger { width: 45px; height: 45px; bottom: 20px; right: 20px; }
+            .preview-circle { width: 28px; height: 28px; margin-right: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .glass-panel { padding: 25px 15px; }
+            h1 { font-size: 1.8rem; letter-spacing: 4px; }
+            .main-btn { padding: 14px 25px; font-size: 0.95rem; }
+            .btn-mini { padding: 8px 14px; font-size: 0.8rem; }
+            .option-card { padding: 14px; }
+            .level-grid-container { gap: 6px; padding: 12px; max-height: 200px; }
+            .level-node { min-width: 45px; min-height: 45px; font-size: 0.85rem; }
+            .hero-title { font-size: 2.5rem; }
+            .stats-label { font-size: 0.65rem; margin-bottom: 25px; }
+            .ticker-item { font-size: 0.6rem; padding: 0 1rem; }
+            .social-links { gap: 12px; }
+            .social-pill { padding: 8px 16px; font-size: 0.8rem; }
+            .info-card { padding: 30px; }
+            .creator-name { font-size: 1.8rem; }
+            p { font-size: 0.9rem; }
+        }
+        
+        /* Grid layout for skins on mobile to prevent scrolling */
+        .options-grid { width: 100%; display: flex; flex-direction: column; }
+        
+        @media (max-width: 768px) {
+            .options-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin: 10px 0;
+            }
+            .options-grid .option-card {
+                margin-bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px 5px; height: 100%;
+            }
+            .options-grid .preview-circle { margin-right: 0; margin-bottom: 8px; }
+            .options-grid .option-card.selected::before { top: 8px; right: 8px; transform: none; }
+        }
+
+        /* Difficulty Grid Responsive */
+        .difficulty-grid { width: 100%; display: flex; flex-direction: column; margin-top: 20px; }
+        
+        @media (max-width: 768px) {
+            .difficulty-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                margin: 15px 0;
+            }
+            .difficulty-grid .option-card {
+                margin-bottom: 0; padding: 15px 5px; text-align: center; display: flex; justify-content: center; align-items: center;
+            }
+            .difficulty-grid .option-card.selected::before { top: 4px; right: 4px; transform: none; font-size: 0.8rem; }
+        }
+
+        /* --- IN-GAME EXIT BUTTON --- */
+        #in-game-exit {
+            position: absolute;
+            bottom: 30px; left: 30px;
+            width: 55px; height: 55px;
+            border-radius: 18px;
+            background: rgba(255, 62, 62, 0.15);
+            border: 1px solid rgba(255, 62, 62, 0.3);
+            color: #ff3e3e;
+            display: none; /* Hidden by default */
+            align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.5rem;
+            cursor: pointer; z-index: 101;
+            backdrop-filter: blur(10px); transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        #in-game-exit:hover {
+            background: rgba(255, 62, 62, 0.3);
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 0 30px rgba(255, 62, 62, 0.4);
+            border-color: #ff3e3e; color: white;
+        }
+        @media (max-width: 768px) {
+            #in-game-exit { width: 45px; height: 45px; bottom: 20px; left: 20px; font-size: 1.2rem; }
+        }
+
+        /* Utility for hiding specific elements without breaking overlay transitions */
+        .hud-item.hidden, .main-btn.hidden {
+            display: none !important;
+        }
+
+        /* --- TOUCH CONTROLS --- */
+        #touch-controls {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 10;
+            touch-action: none;
+            display: none;
+        }
+
+        .countdown {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 30px var(--neon-green);
+            z-index: 2000;
+            display: none;
+            pointer-events: none;
+        }
+
+        /* Landscape Mode Fixes */
+        @media (max-height: 600px) {
+            .glass-panel { padding: 15px; max-height: 95vh; }
+            h1 { font-size: 1.5rem; margin-bottom: 5px; }
+            .option-card { padding: 10px; margin-bottom: 8px; }
+            .hero-title { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -488,9 +623,9 @@
         </div>
     </div>
     
-    <div id="touch-controls"></div>
-
     <div id="game-container">
+        <div id="touch-controls"></div>
+        <div id="in-game-exit">✕</div>
         <div id="hud">
             <div id="level-hud" class="hud-item hidden" style="border-right-color: #f1c40f;">
                 <div class="hud-label">Mission</div>
@@ -509,8 +644,8 @@
         <div id="countdown" class="countdown">3</div>
         <canvas id="gameCanvas"></canvas>
 
-        <div id="start-overlay" class="overlay" style="perspective: 1000px;">
-            <div class="glass-panel" style="transform-style: preserve-3d; transition: transform 0.1s ease-out;">
+        <div id="start-overlay" class="overlay">
+            <div class="glass-panel">
                 <div class="hero-title">SNAKE</div>
                 <p class="stats-label">ULTRA HD EVOLUTION</p>
                 <button id="to-mode-btn" class="main-btn">Initialize System</button>
@@ -556,20 +691,22 @@
         </div>
 
         <div id="selection-overlay" class="overlay hidden">
-            <div class="glass-panel" style="overflow-y: auto;">
+            <div class="glass-panel">
                 <div class="nav-header"><div id="skin-back-btn" class="btn-mini">← Back</div></div>
                 <h1 style="font-size: 2.5rem; letter-spacing: 8px;">Choose Your Skin</h1>
-                <div class="option-card snake-option selected" data-skin="classic">
-                    <div class="preview-circle" style="background:radial-gradient(circle, #39ff14, #0a3d1d)"></div> EMERALD 
-                </div>
-                <div class="option-card snake-option" data-skin="neon">
-                    <div class="preview-circle" style="background:radial-gradient(circle, #00f2ff, #003366)"></div> DIAMOND
-                </div>
-                <div class="option-card snake-option" data-skin="lava">
-                    <div class="preview-circle" style="background:radial-gradient(circle, #ff4e00, #4d0000)"></div> MAGMA 
-                </div>
-                <div class="option-card snake-option" data-skin="arctic">
-                    <div class="preview-circle" style="background:radial-gradient(circle, #ffffff, #8ec5fc)"></div> SNOW
+                <div class="options-grid">
+                    <div class="option-card snake-option selected" data-skin="classic">
+                        <div class="preview-circle" style="background:radial-gradient(circle, #39ff14, #0a3d1d)"></div> EMERALD 
+                    </div>
+                    <div class="option-card snake-option" data-skin="neon">
+                        <div class="preview-circle" style="background:radial-gradient(circle, #00f2ff, #003366)"></div> DIAMOND
+                    </div>
+                    <div class="option-card snake-option" data-skin="lava">
+                        <div class="preview-circle" style="background:radial-gradient(circle, #ff4e00, #4d0000)"></div> MAGMA 
+                    </div>
+                    <div class="option-card snake-option" data-skin="arctic">
+                        <div class="preview-circle" style="background:radial-gradient(circle, #ffffff, #8ec5fc)"></div> SNOW
+                    </div>
                 </div>
                 <button id="to-difficulty-btn" class="main-btn">Select Difficulty</button>
             </div>
@@ -579,14 +716,16 @@
             <div class="glass-panel">
                 <div class="nav-header"><div class="btn-mini back-to-skin">← Skins</div></div>
                 <h1 style="font-size: 2.5rem; letter-spacing: 8px;">Choose Your Difficulty</h1>
-                <div class="option-card difficulty-option" data-level="easy" style="margin-top: 20px;">
-                    <div style="color:#2ecc71; font-weight: 800;">Easy</div>
-                </div>
-                <div class="option-card difficulty-option selected" data-level="medium">
-                    <div style="color:#f1c40f; font-weight: 800;">Medium</div>
-                </div>
-                <div class="option-card difficulty-option" data-level="hard">
-                    <div style="color:#e74c3c; font-weight: 800;">Hard</div>
+                <div class="difficulty-grid">
+                    <div class="option-card difficulty-option" data-level="easy">
+                        <div style="color:#2ecc71; font-weight: 800;">Easy</div>
+                    </div>
+                    <div class="option-card difficulty-option selected" data-level="medium">
+                        <div style="color:#f1c40f; font-weight: 800;">Medium</div>
+                    </div>
+                    <div class="option-card difficulty-option" data-level="hard">
+                        <div style="color:#e74c3c; font-weight: 800;">Hard</div>
+                    </div>
                 </div>
                 <button id="start-game-btn" class="main-btn">Start </button>
             </div>
@@ -654,29 +793,34 @@
             ctx: null, 
             gainNode: null,
             init() { 
-                if (!this.ctx) {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                    this.gainNode = this.ctx.createGain();
-                    this.gainNode.connect(this.ctx.destination);
-                } 
-                if (this.ctx.state === 'suspended') this.ctx.resume(); 
+                try {
+                    if (!this.ctx) {
+                        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+                        if (AudioCtor) {
+                            this.ctx = new AudioCtor();
+                            this.gainNode = this.ctx.createGain();
+                            this.gainNode.connect(this.ctx.destination);
+                        }
+                    } 
+                    if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); 
+                } catch(e) { console.warn('Audio init failed', e); }
             },
             playEat() {
-                this.init(); const osc = this.ctx.createOscillator(), g = this.ctx.createGain();
+                this.init(); if(!this.ctx) return; const osc = this.ctx.createOscillator(), g = this.ctx.createGain();
                 osc.type = 'sine'; osc.frequency.setValueAtTime(440, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.1);
                 g.gain.setValueAtTime(0.1, this.ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
                 osc.connect(g); g.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + 0.2);
             },
             playCrash() {
-                this.init(); const osc = this.ctx.createOscillator(), g = this.ctx.createGain();
+                this.init(); if(!this.ctx) return; const osc = this.ctx.createOscillator(), g = this.ctx.createGain();
                 osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, this.ctx.currentTime);
                 osc.frequency.linearRampToValueAtTime(40, this.ctx.currentTime + 0.4);
                 g.gain.setValueAtTime(0.2, this.ctx.currentTime); g.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
                 osc.connect(g); g.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + 0.5);
             },
             playUI() {
-                this.init(); const osc = this.ctx.createOscillator(), g = this.ctx.createGain();
+                this.init(); if(!this.ctx) return; const osc = this.ctx.createOscillator(), g = this.ctx.createGain();
                 osc.type = 'square'; osc.frequency.setValueAtTime(800, this.ctx.currentTime);
                 g.gain.setValueAtTime(0.05, this.ctx.currentTime); g.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.05);
                 osc.connect(g); g.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + 0.05);
@@ -818,12 +962,19 @@
             constructor() {
                 this.canvas = document.getElementById('gameCanvas'); this.ctx = this.canvas.getContext('2d');
                 this.particles = []; this.cellSize = 25;
+                this.lastWidth = window.innerWidth;
                 this.initUI(); this.resize(); this.initTouch();
-                window.addEventListener('resize', () => { this.resize(); if(State.isRunning) this.reset(); });
+                window.addEventListener('resize', () => { 
+                    if (window.innerWidth !== this.lastWidth) {
+                        this.lastWidth = window.innerWidth;
+                        this.resize(); 
+                        if(State.isRunning) this.reset(); 
+                    }
+                });
             }
             resize() {
                 const w = window.innerWidth, h = window.innerHeight;
-                this.cellSize = w < 768 ? 20 : 25;
+                this.cellSize = w < 480 ? 18 : (w < 768 ? 20 : 25);
                 this.canvas.width = Math.floor(w / this.cellSize) * this.cellSize;
                 this.canvas.height = Math.floor(h / this.cellSize) * this.cellSize;
                 State.gridWidth = this.canvas.width / this.cellSize;
@@ -832,15 +983,6 @@
             initUI() {
                 const overlays = { start: document.getElementById('start-overlay'), mode: document.getElementById('mode-overlay'), levels: document.getElementById('level-selection-overlay'), skin: document.getElementById('selection-overlay'), diff: document.getElementById('difficulty-overlay'), over: document.getElementById('gameover-overlay'), pause: document.getElementById('pause-overlay'), pass: document.getElementById('levelpass-overlay') };
                 const hideAll = () => Object.values(overlays).forEach(o => o.classList.add('hidden'));
-
-                // 3D Tilt Effect for Landing
-                const startPanel = overlays.start.querySelector('.glass-panel');
-                overlays.start.addEventListener('mousemove', (e) => {
-                    const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
-                    const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
-                    startPanel.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-                });
-                overlays.start.addEventListener('mouseleave', () => { startPanel.style.transform = `rotateY(0deg) rotateX(0deg)`; });
 
                 document.getElementById('to-mode-btn').onclick = () => { AudioEngine.playUI(); AudioEngine.init(); hideAll(); overlays.mode.classList.remove('hidden'); };
                 document.getElementById('mode-next-btn').onclick = () => { AudioEngine.playUI(); hideAll(); if (State.selectedMode === 'levels') { this.renderLevelGrid(); overlays.levels.classList.remove('hidden'); } else overlays.skin.classList.remove('hidden'); };
@@ -853,7 +995,9 @@
                 
                 document.getElementById('skin-back-btn').onclick = () => { AudioEngine.playUI(); hideAll(); if (State.selectedMode === 'levels') overlays.levels.classList.remove('hidden'); else overlays.mode.classList.remove('hidden'); };
                 
-                document.querySelectorAll('.exit-game').forEach(b => b.onclick = () => { AudioEngine.playUI(); State.isRunning = false; State.isPaused = false; AudioEngine.stopMusic(); hideAll(); overlays.start.classList.remove('hidden'); });
+                const exitGame = () => { AudioEngine.playUI(); State.isRunning = false; State.isPaused = false; AudioEngine.stopMusic(); hideAll(); overlays.start.classList.remove('hidden'); document.getElementById('in-game-exit').style.display = 'none'; document.getElementById('touch-controls').style.display = 'none'; };
+                document.querySelectorAll('.exit-game').forEach(b => b.onclick = exitGame);
+                document.getElementById('in-game-exit').onclick = exitGame;
                 
                 document.querySelectorAll('.mode-option').forEach(opt => opt.onclick = () => { AudioEngine.playUI(); document.querySelectorAll('.mode-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); State.selectedMode = opt.dataset.mode; });
                 document.querySelectorAll('.snake-option').forEach(opt => opt.onclick = () => { AudioEngine.playUI(); document.querySelectorAll('.snake-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); State.selectedSkin = opt.dataset.skin; });
@@ -959,6 +1103,8 @@
                 this.food = new Food(); this.food.spawn(this.snake.segments, State.obstacles);
                 this.particles = []; State.score = 0; State.isRunning = true; State.isPaused = false;
                 State.lastTime = performance.now(); State.accumulatedTime = 0;
+                document.getElementById('in-game-exit').style.display = 'flex';
+                document.getElementById('touch-controls').style.display = 'block';
                 
                 const levelHud = document.getElementById('level-hud');
                 if (State.selectedMode === 'levels') {
@@ -978,12 +1124,16 @@
             gameOver() { 
                 State.isRunning = false; AudioEngine.stopMusic(); AudioEngine.playCrash();
             if(State.score > State.highScore) { State.highScore = State.score; Storage.set('snake_hd_highscore', State.highScore); } 
-                document.getElementById('gameover-overlay').classList.remove('hidden'); document.getElementById('final-score').innerText = State.score; 
+                document.getElementById('gameover-overlay').classList.remove('hidden'); document.getElementById('final-score').innerText = State.score;
+                document.getElementById('touch-controls').style.display = 'none';
+                document.getElementById('in-game-exit').style.display = 'none';
             }
             levelComplete() { 
                 State.isRunning = false; AudioEngine.stopMusic(); AudioEngine.playEat();
             if (State.currentLevel === State.unlockedLevel) { State.unlockedLevel++; Storage.set('snake_hd_unlocked', State.unlockedLevel); } 
-                document.getElementById('passed-level-num').innerText = State.currentLevel; document.getElementById('levelpass-overlay').classList.remove('hidden'); 
+                document.getElementById('passed-level-num').innerText = State.currentLevel; document.getElementById('levelpass-overlay').classList.remove('hidden');
+                document.getElementById('touch-controls').style.display = 'none';
+                document.getElementById('in-game-exit').style.display = 'none';
             }
             updateHUD() {
                 const d = CONFIG.DIFFICULTIES[State.selectedDifficulty];
